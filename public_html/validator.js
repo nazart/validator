@@ -19,6 +19,12 @@ var validator = function (nombreFormulario, elementos) {
     var onsubmit = this.formulario.onsubmit;
     this.formulario.onsubmit = (function (that) {
         return function (evt) {
+            var elementsError = document.getElementsByClassName('validate_error');
+            if (elementsError.length > 0) {
+                for (var i = 0; i < elementsError.length; i++) {
+                    elementsError[i].parentNode.removeChild(elementsError[i]);
+                }
+            }
             return that.validar(evt);
         };
     })(this);
@@ -41,7 +47,15 @@ validator.prototype.validar = function (evt) {
         }
     }
     evt.preventDefault();
-    console.log(this.errores);
+    
+    
+    
+    
+    for (var i = 0, itemCount = this.errores.length; i < itemCount; i++) {
+        var d1 = document.getElementById(this.errores[i].elemento); 
+        d1.insertAdjacentHTML('afterend', '<div class="validate_error">'+this.errores[i].mensaje+'</div>');
+    }
+    //console.log(this.errores);
 };
 validator.prototype.setValidaciones = {
     requerido: function (objecElemento) {
